@@ -1,0 +1,28 @@
+# Игнорирование папки сборки
+build/
+
+# Игнорирование конфигурационных файлов CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Игнорирование файлов, созданных ESP-IDF
+sdkconfig
+sdkconfig.old
+
+# Логи и отладочные файлы
+*.log
+*.elf
+*.map
+
+# Игнорирование временных файлов редакторов
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# Игнорирование пользовательских настроек VS Code
+.vscode/
+
+# Игнорирование файла зависимостей
+dependencies.lock
