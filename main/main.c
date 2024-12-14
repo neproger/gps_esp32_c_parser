@@ -5,15 +5,27 @@
 #include "esp_log.h"
 void some_other_task(void *pvParameters)
 {
+    // Переменные для хранения предыдущих значений координат
+    float prev_latitude = 0.0f;
+    float prev_longitude = 0.0f;
+
     while (1) {
         // Получаем доступ к глобальным переменным через семафор
         if (xSemaphoreTake(gps_data_mutex, portMAX_DELAY) == pdTRUE) {
-            ESP_LOGI("GPS_DATA", "%.6f, %.6f", latitude, longitude); 
+            // Проверяем, изменились ли координаты
+            if (latitude != prev_latitude || longitude != prev_longitude) {
+                ESP_LOGI("GPS_DATA", "%.6f, %.6f", latitude, longitude);
+                
+                // Обновляем предыдущие значения
+                prev_latitude = latitude;
+                prev_longitude = longitude;
+            }
+            
             // Освобождаем семафор
             xSemaphoreGive(gps_data_mutex);
         }
 
-        vTaskDelay(2000 / portTICK_PERIOD_MS);  // Периодический вывод данных
+        vTaskDelay(2000 / portTICK_PERIOD_MS);  // Периодическая проверка данных
     }
 }
 void app_main(void)

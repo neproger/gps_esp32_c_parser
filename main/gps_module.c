@@ -200,7 +200,15 @@ void gps_task(void *pvParameters)
                     }
                     else
                     {
-                        printf("HDOP: %.2f\n", parsed_data.hdop);
+                        printf("Searching for satellites\n");
+                        if (xSemaphoreTake(gps_data_mutex, portMAX_DELAY) == pdTRUE)
+                        {
+                            latitude = 0.0f;
+                            longitude = 0.0f;
+
+                            // Освобождаем семафор после обновления
+                            xSemaphoreGive(gps_data_mutex);
+                        }
                     }
                 }
                 line = strtok(NULL, "\r\n");
